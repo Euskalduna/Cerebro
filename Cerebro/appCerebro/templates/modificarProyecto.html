@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <!--Cambiar TITLE-->
+    <title>Document</title>  
+    {% load staticfiles%}    
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css'%}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css'%}"/>
+
+
+</head>
+<body>
+	<div class="col-lg-10 col-lg-offset-1">
+		<div class="container">
+			<h1>PONER TITULO</h1>
+			<form action="/{{nombreProyecto}}/modificacion/" method="POST">            
+				<div class="form-group">
+					<label>Nombre:</label>
+					<input type="text" id="nombreProyecto" name="nombreProyecto" class="form-control" value="{{nombreProyecto}}" required>
+					<br/>
+
+					<label>Desarrollador(es):</label>
+					{%for d in nombreDesarrolladores%}
+						<input type="text" class="form-control" value="{{d}}"><br/>
+            		{% endfor%}
+            		<!--ELIMINAR-->
+					<div id="conenidoDesarrolladores">
+					
+					</div>
+
+					<label>Descripcion:</label>
+					<!--PROBLEMA: este TAG no tiene el atributo "value"
+					como hago para mostrar el texto anterior y que se pueda editar???-->
+					<textarea id="descripcionProyecto" name="descripcionProyecto" class="form-control" rows="3">{{descripcion}}</textarea>					
+					<br/>			
+				</div>
+				<br>
+				<br>
+
+			<!--ORIGINAL-->
+				<div id="anadir">
+					<label>Atributo</label>
+					<input id="anadirAtributo" type="button" class="btn btn-primary" value="Añadir Atributo">  
+					<br>
+					<br>
+					
+					<div id="contenido">
+					
+					</div>
+				</div>
+			<!--FIN ORIGINAL-->	
+				<br>
+				<div id="modificar">
+					<label>Modificar atributo:</label>
+					<select id="atributosModificar"> 
+						{% for a in atributos %}						
+							<option id="opcion{{forloop.counter}}" value="{{forloop.counter}}"> {{a.nombreAtributo}} </option>
+						{% endfor %}
+					</select>
+					<input id="modAtributo" type="button" class="btn btn-primary" value="Modificar"> 
+					<input id="eliminar" type="button" class="btn btn-warning" value="Eliminar"> 
+					<!--hago dispaly del nombre
+					de las propiedades y sus tipos -->
+					<br>
+					<br>
+
+					
+					<div id="contenidoModificacion">
+					
+					</div>
+				</div>
+
+
+				<input type="hidden" id="numeroAtributos" name="numeroAtributos">
+				<input type="hidden" id="numeroPropiedades" name="numeroPropiedades">
+				
+				<input type="hidden" id="mNumeroAtributos" name="mNumeroAtributos">
+				<input type="hidden" id="mNumeroPropiedades" name="mNumeroPropiedades">
+
+				<a class="btn btn-primary" style="margin-bottom:10px" href="/tecnico/">Atras</a>
+				<button type="submit" class="btn btn-primary" style="margin-bottom:10px">Finalizar</button>
+			</form>    
+
+		</div>   
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
+</body>
+</html>
+
+<script>
+	var contDiv=1;
+	var numPropiedades=[];
+	
+	$('#anadirAtributo').click(function(e){
+		var contPropiedad=1;
+		$('#contenido').append("<div id='contenidoAtributo"+contDiv+"'> </div>");
+		
+		$('#contenidoAtributo'+contDiv+'').append("<label>Nombre atributo:</label>"+
+		"<input id='nombreAtributo"+contDiv+"' name='nombreAtributo"+contDiv+"' type='text' class='form-control'>"+
+		"<input id='anadirPropiedades"+contDiv+"' type='button'  class='btn btn-primary' value='Añadir Propiedades'>" +
+		"<br>"+
+		"<div id='contenidoAtributo"+contDiv+"Propiedades'> </div>"
+		);
+		
+		var divActual=contDiv;
+		contDiv++;
+		
+		var elem=document.getElementById("numeroAtributos")
+		elem.value=divActual
+
+		numPropiedades[divActual-1]=0;
+		
+		$('#anadirPropiedades'+divActual).click(function(e){
+			$('#contenidoAtributo'+divActual+'Propiedades').append("<div id='contenidoAtributo"+divActual+"Propiedad"+contPropiedad+"' class='col-md-offset-1 form-group' style='border: 1px solid rgba(192,192,192,0.5)'></div>");
+			
+			$('#contenidoAtributo'+divActual+'Propiedad'+contPropiedad).append(
+			"<label>Nombre propiedad"+contPropiedad+":</label>"+
+			"<input id='nombreAtributo"+divActual+"Propiedad"+contPropiedad+"' name='nombreAtributo"+divActual+"Propiedad"+contPropiedad+"' type='text' class='form-control'>"+
+			"<br>"+
+			"<label>Tipo propiedad"+contPropiedad+":</label>"+
+			"<input id='tipoAtributo"+divActual+"Propiedad"+contPropiedad+"' name='tipoAtributo"+divActual+"Propiedad"+contPropiedad+"' type='text' class='form-control'>"+
+			"<br>"+
+			"<label>Valor propiedad"+contPropiedad+":</label>"+
+			"<input id='valorAtributo"+divActual+"Propiedad"+contPropiedad+"' name='valorAtributo"+divActual+"Propiedad"+contPropiedad+"' type='text' class='form-control'>"+
+			"<br>"+			
+			"<br>"			
+			);
+			numPropiedades[divActual-1]=contPropiedad;
+			var elem=document.getElementById("numeroPropiedades")
+			elem.value=numPropiedades
+			
+			contPropiedad++;						
+		})		
+	})          
+
+/*----------------------------------------------------------------------------------------------------*/
+	
+var mContDiv=1;
+var mDivActual=1;
+var mNumPropiedades=[];
+//en prueba
+var seleccionados=[];
+
+	$('#modAtributo').click(function(e){		
+		var m=0;
+		var encontrado=false;	
+//		$('#contenidoModificacion').append("<div id='mContenidoAtributo"+mContDiv+"' style='border: 1px solid rgba(192,192,192,0.5)'></div><br>");
+
+		var toappend = "";
+			{% for a in atributos %}
+					trimstr = $('#atributosModificar option:selected').text();
+
+					// alert("longitud");
+					// alert(seleccionados.length);					
+					
+					//
+					for(var b=0;b<seleccionados.length;b++)
+					{
+						if(seleccionados[b]==trimstr)
+						{
+							encontrado=true;							
+						}
+					}
+																	//
+					if (('{{a.nombreAtributo}}' == trimstr.trim())&&(!encontrado))
+					{
+						//						
+						seleccionados[mContDiv-1]=trimstr;
+						//
+						$('#contenidoModificacion').append("<div id='mContenidoAtributo"+mContDiv+"' style='border: 1px solid rgba(192,192,192,0.5)'></div><br>");
+
+						toappend += "<label>Nombre del Atributo:</label>"+
+						"<input id='mLabelNombreAtributo"+mContDiv+"' name='mLabelNombreAtributo"+mContDiv+"' value='{{a.nombreAtributo}}' type='hidden' class='form-control'></input>"+
+						"<input id='mNombreAtributo"+mContDiv+"' name='mNombreAtributo"+mContDiv+"' value='{{a.nombreAtributo}}' type='text' class='form-control'></input>"+
+						"<br>"+
+						"<input id='a"+mContDiv+"' type='button'  class='btn btn-primary' value='Añadir Propiedad'>"
+
+
+						{% for p in a.propiedades %}
+							m++;	
+							toappend+="<div id='mAtributo"+mContDiv+"Propiedad"+m+"' class='col-md-offset-1 form-group'>"+
+																
+									"<label>Nompre Propiedad "+m+":</label>"+
+									"<input id='mNombreAtributo"+mContDiv+"Propiedad"+m+"' name='mNombreAtributo"+mContDiv+"Propiedad"+m+"' value='{{p.nombrePropiedad}}' type='text' class='form-control'></input>"+
+									"<label>Tipo Propiedad "+m+":</label>"+
+									"<input id='mTipoAtributo"+mContDiv+"Propiedad"+m+"' name='mTipoAtributo"+mContDiv+"Propiedad"+m+"' value='{{p.tipoPropiedad}}' type='text' class='form-control'></input>"+
+									"<br>"+
+							"</div>"+""
+														
+						{% endfor %}						
+					}
+			{% endfor %}
+		
+		$('#mContenidoAtributo'+mContDiv+'').append(toappend);		
+
+		var mDivActual=(document.getElementById("mContenidoAtributo"+mContDiv));
+		mDivActual=mDivActual.id;
+		var mDivActual=mDivActual.substr(mDivActual.length-1);
+	
+		$('#a'+mDivActual).click(function(e){
+			m++;
+			$('#mContenidoAtributo'+mDivActual+'').append(
+				"<div id='mAtributo"+mDivActual+"Propiedad"+(m)+"' class='col-md-offset-1 form-group'>"+
+					"<label>Nompre Propiedad"+(m)+":</label>"+
+					"<input id='mNombreAtributo"+mDivActual+"Propiedad"+(m)+"' name='mNombreAtributo"+mDivActual+"Propiedad"+(m)+"' value='' type='text' class='form-control'></input>"+
+					"<label>Tipo Propiedad"+(m)+":</label>"+
+					"<input id='mTipoAtributo"+mDivActual+"Propiedad"+(m)+"' name='mTipoAtributo"+mDivActual+"Propiedad"+(m)+"' value='' type='text' class='form-control'></input>"+
+				"</div>"
+				);			
+
+			mNumPropiedades[mDivActual-1]=m;
+			var aux2=document.getElementById("mNumeroPropiedades");
+			aux2.value=mNumPropiedades;
+			alert(aux2.value);			
+		})
+
+		var aux1=document.getElementById("mNumeroAtributos");
+		aux1.value=mContDiv;
+		alert(aux1.value);
+
+		mNumPropiedades[mContDiv-1]=m;
+		var aux2=document.getElementById("mNumeroPropiedades");
+		aux2.value=mNumPropiedades;
+		alert(aux2.value);
+
+		mContDiv++;
+	});
+</script>

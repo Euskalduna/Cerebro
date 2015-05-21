@@ -1,0 +1,43 @@
+<html>
+    <head>
+        <title>PuntuacionesHTML</title>
+    </head> 
+
+    <body>
+        <div id="datos">
+            <center>
+                <h2> Datos recogidos< /h2>
+                <br/>
+                <table border="2">
+                    <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Fecha</th>
+                            <th>Nivel</th>
+                            <!-- el resto de columnas que las sacaria de las variables del proyeto -->
+                            {% for v in variables %}
+                                <th>{{v.nombre}}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    
+                    <!-- Regrupa algo en funcion de la clave primaria de la partida y crea un objeto llamado p1-->
+                    {% regroup puntuaciones by partida.pk as p1 %}
+
+                    {% for p in p1 %}
+                    <tr>
+                        <td>{{p.partida.usuario.nombre}} </td>
+                        <td>{{p.partida.fecha}} </td>
+                        <td>{{p.nivel}} </td>
+                    </tr>
+                
+                    
+                    
+                    
+                </table>
+            </center>
+        </div>
+        
+    </body>
+</html>
+

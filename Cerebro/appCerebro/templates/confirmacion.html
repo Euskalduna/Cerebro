@@ -1,0 +1,23 @@
+<html>
+<head>
+
+<!--Para poder usar JQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
+
+
+</head>
+
+<body>
+	<div class="container-fluid">
+		<p>Accion finalizada</p>
+		<form method="post" action="/tecnico/">
+	            <input type="submit" class="sb bradius" value="Siguiente"><!--Boton para Hacer el logeo-->
+
+                <!--Cuando se da al boton de SUBMIT, se ejecuta el Form en el que esta, que tiene metodo POST y acción "/", esta acción indica que ira a la URL raiz, en este caso a "r^$" (directorio raiz) (en el urls.py) y ahi se llamara a lo que sea, en este caso "r^$" tiene indicado que vaya al archivo views.home y busque el metodo llamado "home" y ahí se hace lo que se tenga que hacer-->
+            </form>
+	</div>
+
+</body>
+</html>
+

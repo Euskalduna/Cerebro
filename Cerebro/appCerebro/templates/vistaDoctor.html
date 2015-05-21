@@ -1,0 +1,23 @@
+<html>
+<head>
+
+</head>
+
+<body>
+	<div class="container-fluid">
+		<div>
+			<h1>Proyectos</h1>
+			{% for p in pr %}
+				<p><a href="/proyectos/{{p.nombre}}"></a>{{p.nombre}}</p>
+			{% endfor %}
+		</div>
+
+		<div>
+			<h1>Pacientes</h1>
+			{% for p in pr %}
+				<p><a href="/pacientes/{{pac.nombre}}"></a>{{pac.nombre}}</p>
+			{% endfor %}
+		</div>
+	</div>
+</body>
+</html>

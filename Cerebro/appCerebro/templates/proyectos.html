@@ -1,0 +1,19 @@
+<html>
+	<body>
+		<div id=proyecto>
+			<center>
+				<h2> Selecciona un proyecto</h2>
+				<form action="." method="POST">
+					<select> 
+						{% for p in pr %}
+						<option value="{{p.pk}}"> {{p.nombre}} </option>
+						{% endfor %}
+					</select>
+					</br>
+					</br>
+					<input type="c" class="sb radius" value="ver"
+				</form>
+			</center>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  
+<title>IndexHTML</title>
+   
+{% load staticfiles%}
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css'%}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css'%}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css'%}"/>
+
+
+</head>
+<body>
+
+<div class=" col-xs-10 col-xs-offset-1" style="margin-top:5%">
+	<div class="col-md-4 container col-md-offset-4" style="border: 1px solid rgba(192,192,192,0.5)"  >
+
+		{% if login_error %}
+	         <div class="flash2">Usuario y/o contraseña incorrecta</div>
+	    {% endif %}
+
+	  <div>
+	  	<img src="{% static 'img/deustoTechlife.png' %}" alt="DeustoTech - Administración" title="DeustoTech - Administración" class="img-responsive" style="margin-top: 10px">
+	  </div>
+	  	 
+	  <form role="form" method="post" action="/">
+	  	{% csrf_token %}
+	    <div class="form-group">      
+
+	      <label for="username">Usuario: <!--Es el texto de encima del campo user--></label>
+	      <input id="username" type="text" class="form-control" name="username" value="">
+	    </div>
+
+	    <div class="form-group">      
+	      <label for="pass">Contraseña: <!--Es el texto de encima del campo pass--></label>
+	      <input id="pass" type="password" class="form-control" name="pass" value="">
+	    </div>
+
+	    <button type="submit" class="btn btn-default" style="margin-bottom:10px">Enviar</button>
+	  </form>
+  </div>
+</div>
+
+</body>
+</html>
+
+
+
+

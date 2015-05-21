@@ -1,0 +1,175 @@
+<head>
+<html>
+
+<!--Para poder usar JQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
+<!--{% load staticfiles%}
+<script src="{% static 'js/metodos.js'%}"></script>-->
+
+
+</head>
+
+<body>
+
+	<div class="container-fluid">
+		<!--ATENCION: action indica la direccion a la que se envia la informacion del FORM-->		
+		<form method="post" action="/confirmacion/">
+	            <label for="projectName">Nombre del proyecto: </label>
+	            <input id="projectName" type="text" class="txt bradius" name="projectName" value="">
+				<br>
+
+
+				<!--ANADIR CAMPO DESARROLLADOR(ES) DEL PROYECTO-->								
+				<label for="numDeveloper">Numero de desarrolladores: </label>
+	            <input id="numDeveloper" type="text" class="txt bradius" name="numDeveloper" value="" onClick="mostrar()">
+				<br>
+				
+				<div id="desarrolladores">
+
+				</div>
+				<!--
+				<label for="projectDeveloper">Nombre del desarrollador: </label>
+	            <input id="projectDeveloper" type="text" class="txt bradius" name="projectDeveloper" value="">
+				<br>
+				-->
+
+
+
+				<!--Tipo (si tiene actividades o no))-->
+				<label for>Tipo de proyecto:</label>
+				<select id="option" onChange="mostrar()" required> 
+						<option selected value="0">Selecciona una opcion</option>
+						<option value="1"> Con actividades </option>
+						<option value="2"> Sin actividades </option>
+				</select>
+				<br>
+
+				<div id="actividades">
+	        		
+	        	</div>
+
+	        	<div id="variables">
+	        		<!--Aqui se escribiran usando el script de JQuery las casillas de Nombre y Tipo de variable-->
+	        	</div>               
+	            <input type="submit" class="sb bradius" value="Siguiente">	            
+            </form>
+	</div>
+	
+	<p>Estado 2</p>
+
+
+	
+	<div class="container-fluid">
+		<p>Accion finalizada</p>
+		<p>{{estado}}</p>
+		<form method="post" action="/tecnico/">
+	            <input type="submit" class="sb bradius" value="Siguiente">
+        </form>
+	</div>	
+	
+
+</body>
+</html>
+
+<script>
+function mostrar() {
+	
+    var numOpcion = $("#option").val();
+	$("#actividades").text("");
+	
+		if(numOpcion == 2){
+			
+			$("#actividades").append("<label>Numero de variables</label><br><input id=variableNum type='text' name='variableNum' value=''><br><br>");
+						
+		}else if(numOpcion == 1){
+			
+			$("#actividades").append("<label>Numero de actividades</label><br><input id='activityNum' type='text'><br><br>");
+			
+
+			$("#activityNum").focusout(function(){
+				var numActiv = $("activityNum").val();
+				$("#variables").text("");
+				for(var i=0;i<numActiv;i++){
+					$("#variables").append(
+					"<div id='activity"+(i+1)+"Block'>
+						<label>Nombre actividad:</label>
+						<br>
+						<input name=activity"+(i+1)+"Name type='text'>
+						<br>
+						<label>Numero de niveles:</label>
+						<br>
+						<input id=activity"+(i+1)+"levelNum name=activity"+(i+1)+"levelNum type='text'>
+						<br>
+						<div id=activity"+(i+1)+"levels>						
+						</div>
+					 </div>");
+
+					$("#activity"+(i+1)+"levelNum").focusout(function(e){
+						var numNivel=$("#activity"+(i+1)+"levelNum").val()
+						$("#activity"+(i+1)+"levels").text("");
+						for(var a=0;a<numNivel;a++){
+							$("#activity"+(i+1)+"levels").append(
+							"<div id = level>
+								<label>Numero de variables:</label>
+								<br>
+								<input id=activity"+(i+1)+"Level"+(a+1)+"VarNum name=activity"+(i+1)+"Level"+(a+1)+"VarNum type='text'>
+								<br>
+								<div id=activity"+(i+1)+"Level"+(a+1)+"Vars>
+								</div>
+							</div>"
+							);	
+
+							$("#activity"+(i+1)+"Level"+(a+1)+"VarNum").focusout(function(e){
+								var numVars=$("#activity"+(i+1)+"Level"+(a+1)+"VarNum").val()
+								$("#activity"+(i+1)+"Level"+(a+1)+"Vars").text("");
+
+								for(var b=0;b<numVars;b++){
+									$("#activity"+(i+1)+"Level"+(a+1)+"Vars").append(
+										"<label>
+											Nombre de variable "+(b+1)+":
+										</label>
+										<br>
+										<input name=activity"+(i+1)+"Level"+(a+1)+"Var"+(b+1)+"Name type='text'>
+										<br>"
+										);
+									$("#variables").append(
+										"<label>
+											Tipo de la variable "+(b+1)+":
+										</label>
+										<br>
+										<input name=activity"+(i+1)+"Level"+(a+1)+"Var"+(b+1)+"Type type='text'>
+										<br>
+										<br>"
+										);	
+								}
+							}
+						}
+					}														
+				}
+			}				
+		}
+
+	$('#variableNum').focusout(function(e) {
+	
+				var numVar = $('#variableNum').val();
+				$("#variables").text("");
+				for(var i=0;i<numVar;i++){			
+					$("#variables").append("<label>Nombre de variable "+(i+1)+":</label><br><input name=var"+(i+1)+"Name type='text'><br>");
+					$("#variables").append("<label>Tipo de variable "+(i+1)+":</label><br><input name=var"+(i+1)+"Type type='text'><br><br>");					
+				}				
+			});
+
+			$('#numDeveloper').focusout(function(e) {
+	
+				var numVar = $('#numDeveloper').val();
+				$("#desarrolladores").text("");
+				for(var i=0;i<numVar;i++){			
+					$("#desarrolladores").append("<label>Nombre del desarrollador "+(i+1)+":</label><br><input name=dev"+(i+1)+"Name type='text'><br>");
+					$("#desarrolladores").append("<label>Apellido del desarrollador "+(i+1)+":</label><br><input name=dev"+(i+1)+"LastName type='text'><br><br>");
+					
+				}
+				
+			});		
+}
+</script>

@@ -1,0 +1,143 @@
+<html>
+<head>
+	<!-- Pongo el titulo de la pestaña -->
+	<title></title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			<!-- Cargo el css -->
+	<!-- Cargo el js con el metodo para cambiar pestañas -->	
+	{% load staticfiles%}
+	<!--Cargo la libreria con css de BOOTSTRAP-->	
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css'%}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css'%}"/>
+    
+
+    
+</head>
+
+<body>
+	<div class="container">
+		<div>
+			<!--Titulo o apartado de la pagina con cosas como "Titulo"-->			
+		</div>
+		<div class="col-md-10 col-md-offset:1">
+			<div style="margin-top:60px">
+				<!--"cuerpo" de la pagina-->
+				<!--Poner a la izquierda un indice??-->
+
+				<!--el verdadero "cuerpo", aqui meto las pestañas-->
+			
+				<ul class="nav nav-tabs">
+  					<li class="active"><a href="#proyectos" data-toggle="tab">Proyectos</a></li>
+  					<li><a href="#participantes" data-toggle="tab">Participantes</a></li>
+				</ul>			
+			</div>
+		
+		<!--Lo que contendra cada tab-->
+			<div class="tab-content" >
+				<!--Tab 1-->
+
+				<div id="proyectos" class="tab-pane fade in active">
+					<h3><b>Proyectos</b></h3>
+
+					<div class="table-responsive">
+					<table class="table table-striped table-hover">
+						<tbody>
+						{% for p in proyectos %}											
+							<tr>
+								<div>						
+									<td><a name="{{p.nombre}}" href="/{{p.nombre}}/detalle/">{{p.nombre}}</a></td>
+									<td><button class="btn btn-link "onClick="eliminarProyecto()">Eliminar</button></td>									
+								</div>
+							</tr>										
+						{% endfor %}
+						</tbody>
+					</table>
+					</div>
+
+					<form method="GET" action="/anadirProyecto/">
+	        			<input type="submit" class="btn btn-primary" value="Anadir"><!--Boton para Hacer el logeo-->    
+	            	</form>
+				</div>
+
+				<!--Tab 2-->
+				<div id="participantes" class="tab-pane fade">
+					<h3><b>Participantes</b></h3>	
+					<div class="table-responsive">
+					<table class="table table-striped table-hover">
+						<tbody>
+						{% for p in participantes %}											
+							<tr>
+								<div>	
+									{% ifequal p.keys.pop "user" %}				
+									<td><a name="{{p.user}}" href="/anadirProyecto1/">{{p.user}}</a></td><!--Cambiar el link-->
+									<td><button class="btn btn-link "onClick="eliminarProyecto()">Eliminar</button></td>									
+									{%endifequal%}
+								</div>
+							</tr>										
+						{% endfor %}
+						</tbody>
+					</table>
+					</div>
+
+					<h3><b>Desarrolladores</b></h3>	
+					<div class="table-responsive">
+					<table class="table table-striped table-hover">
+						<tbody>
+						{% for p in participantes %}											
+							<tr>
+								<div>	
+									{% ifequal p.keys.pop "dev" %}				
+									<td><a name="{{p.dev}}" href="/anadirProyecto1/">{{p.dev}}</a></td><!--Cambiar el link-->
+									<!--<td><form role="form" method="post" action="/"></form></td>-->
+
+									<td><button class="btn btn-link "onClick="eliminarProyecto()">Eliminar</button>	</td>
+									{%endifequal%}
+								</div>
+							</tr>										
+						{% endfor %}
+						</tbody>
+						</table>
+					</div>
+
+					<h3><b>Doctores</b></h3>	
+					<div class="table-responsive">
+					<table class="table table-striped table-hover">
+						<tbody>
+						{% for p in participantes %}											
+							<tr>
+								<div>	
+									{% ifequal p.keys.pop "doc" %}				
+									<td><a name="{{p.doc}}" href="/anadirProyecto1/">{{p.doc}}</a></td><!--Cambiar el link-->
+									<td><button class="btn btn-link "onClick="eliminarProyecto()">Eliminar</button>	</td>
+									{%endifequal%}
+								</div>
+							</tr>										
+						{% endfor %}
+						</tbody>
+					</table>
+					</div>
+				</div>		
+			</div>
+		</div>
+	</div>
+
+	<script src="https://code.jquery.com/jquery.js"></script><!--Esta linea es la que me deja utilizar el cambiar de pestaña-->
+	<script src="{%static 'js/bootstrap.min.js'%}"></script>
+	
+
+				<!-- Proyectos (como titulo) -->
+				<!-- Nombre proyecto 1 -->
+				<!-- Nombre proyecto 2 -->
+				<!-- Nombre proyecto 3 -->
+				<!-- (si clico en cualquier nombre me cambia a la ficha del proyecto) -->
+
+</body>
+</html>
+
+
+<script>
+function eliminarProyecto() {
+	'''llamo a una URL que esta vinculado a un metodo que eso borra el proyecto 
+	pasandole el "name" del proyecto asociado'''
+}
+</script>

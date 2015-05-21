@@ -1,0 +1,140 @@
+<html>
+<head>
+
+<!--Para poder usar JQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
+<!--{% load staticfiles%}-->
+<!--<script src='{{STATIC_URL}}js/metodos.js'></script>-->
+
+</head>
+
+<body>
+
+	{%if estado == 1%}
+
+	<div class="container">
+		<!--Nombre Proyecto-->
+		<!--Desarrollador(es)-->
+		<!--Tipo (si tiene actividades o no))-->
+		
+		<!--Si tiene actividades-->
+		<!--Numero de actividades-->
+
+		<!--Si no tiene actividades-->	
+		<!--Numero de variables:-->
+		<!--Nombre variable 1-->
+		<!--Tipo variable 1-->
+
+		<!--Nombre variable 2-->
+		<!--Tipo variable 2-->
+
+		<!--Nombre variable 3-->
+		<!--Tipo variable 3-->
+
+		<!--Siguiente-->
+
+		<!--ATENCION: action indica la direccion a la que se envia la informacion del FORM-->		
+		<form method="post" action="/confirmacion/">
+	            <label for="projectName">Nombre del proyecto: </label>
+	            <input id="projectName" type="text" class="txt bradius" name="projectName" value="">
+				<br>
+
+
+				<!--ANADIR CAMPO DESARROLLADOR(ES) DEL PROYECTO-->
+								
+				<label for="numDeveloper">Numero de desarrolladores: </label>
+	            <input id="numDeveloper" type="text" class="txt bradius" name="numDeveloper" value="" onChange="mostrar1()">
+				<br>
+				
+				<div id="desarrolladores">
+
+				</div>
+				<!--
+				<label for="projectDeveloper">Nombre del desarrollador: </label>
+	            <input id="projectDeveloper" type="text" class="txt bradius" name="projectDeveloper" value="">
+				<br>
+				-->
+
+
+
+				<!--Tipo (si tiene actividades o no))-->
+				<label for>Tipo de proyecto:</label>
+				<select id="option" onChange="mostrar1()" required> 
+						<option selected value="0">Selecciona una opcion</option>
+						<option value="1"> Con actividades </option>
+						<option value="2"> Sin actividades </option>
+				</select>
+				<br>
+
+				<div id="actividades">
+	        		
+	        	</div>
+
+	        	<div id="variables">
+	        		<!--Aqui se escribiran usando el script de JQuery las casillas de Nombre y Tipo de variable-->
+	        	</div>               
+	            <input type="submit" class="sb bradius" value="Siguiente">	            
+            </form>
+	</div>
+	{% elif estado == 2%}
+	<p>Estado 2</p>
+
+
+	{% else%}
+	<div class="container-fluid">
+		<p>Accion finalizada</p>
+		<p>{{estado}}</p>
+		<form method="post" action="/tecnico/">
+	            <input type="submit" class="sb bradius" value="Siguiente">
+        </form>
+	</div>	
+	{%endif%}
+
+</body>
+</html>
+
+<script>
+function mostrar1() {
+	
+    var numVar = $("#option").val();
+	$("#actividades").text("");
+	
+		if(numVar == 2){
+			
+			$("#actividades").append("<label>Numero de variables</label><br><input id=variableNum type='text' name='variableNum' value=''><br><br>");
+						
+		}else if( numVar ==1){
+			
+			$("#actividades").append("<label>Numero de actividades</label><br><input id='activityNum' type='text'><br><br>");
+			
+		}
+		
+		
+		$('#variableNum').focusout(function(e) {
+	
+				var numVar = $('#variableNum').val();
+				$("#variables").text("");
+				for(var i=0;i<numVar;i++){			
+					$("#variables").append("<label>Nombre de variable "+(i+1)+":</label><br><input name=var"+(i+1)+"Name type='text'><br>");
+					$("#variables").append("<label>Tipo de variable "+(i+1)+":</label><br><input name=var"+(i+1)+"Type type='text'><br><br>");
+					
+				}
+				
+			});
+
+			$('#numDeveloper').focusout(function(e) {
+	
+				var numVar = $('#numDeveloper').val();
+				$("#desarrolladores").text("");
+				for(var i=0;i<numVar;i++){			
+					$("#desarrolladores").append("<label>Nombre del desarrollador "+(i+1)+":</label><br><input name=dev"+(i+1)+"Name type='text'><br>");
+					$("#desarrolladores").append("<label>Apellido del desarrollador "+(i+1)+":</label><br><input name=dev"+(i+1)+"LastName type='text'><br><br>");
+					
+				}
+				
+			});		
+}
+</script>
+
+

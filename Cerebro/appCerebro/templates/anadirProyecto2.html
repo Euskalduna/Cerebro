@@ -1,0 +1,106 @@
+<html>
+<head>
+
+<!--Para poder usar JQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
+
+
+</head>
+
+<body>
+
+	<div class="container-fluid">
+		<!--Muestro el nombre del proyecto  y el numero de la actividad-->
+
+		<!--Nombre de actividad-->
+		
+		<!--Numero de niveles-->
+		
+		<!--Nivel 1-->
+		<!--Nº de variables-->
+		<!--Nombre variable 1-->
+		<!--Tipo variable 1-->
+
+		<!--Nivel 2-->
+		<!--Nº de variables-->
+		<!--Nombre variable 1-->
+		<!--Tipo variable 1-->
+
+		<!--Siguiente-->
+
+		<!--ATENCION: action indica la direccion a la que se envia la informacion del FORM-->
+		<form method="post" action="/">
+				<label>Nombre del Proyecto: </label>
+				<br>
+				<label>Actividad numero </label>
+	            <br>
+	            <br>
+
+				<label for="activityName">Nombre de la actividad: </label>
+	            <input id="activityName" type="text" class="txt bradius" name="activityName" value="">
+				<br>
+	      
+	            <label for="levelNum">Numero de niveles:</label>
+	            <input id="levelNum" name="levelNum" onBlur="mostrarLvl(this.id);" value="" type="text" class="txt bradius">
+	            <br>				
+	        	
+	        	<div id="niveles">
+	        		<!--Aqui se escribiran usando el script de JQuery las casillas de Nombre y Tipo de variable-->
+	        	</div>
+                
+	            <input type="submit" class="sb bradius" value="Siguiente"><!--Boton para Hacer el logeo-->
+
+                <!--Cuando se da al boton de SUBMIT, se ejecuta el Form en el que esta, que tiene metodo POST y acción "/", esta acción indica que ira a la URL raiz, en este caso a "r^$" (directorio raiz) (en el urls.py) y ahi se llamara a lo que sea, en este caso "r^$" tiene indicado que vaya al archivo views.home y busque el metodo llamado "home" y ahí se hace lo que se tenga que hacer-->
+            </form>
+	</div>
+
+</body>
+</html>
+
+<script>
+
+function mostrarLvl(id) {
+			var numVar = $("#levelNum").val();
+				$("#niveles").text("");
+				
+				for(var i=1;i<=numVar;i++){
+					$("#niveles").append("<br><label>Nivel "+i+"</label>
+						<br>
+						<label style='margin-left:15px;'>Numero de variables:</label>
+						<br>
+						<input id="+id+i+" type='text' onBlur='mostrarVar(this.id);' style='margin-left:15px' name='varNumber'>
+						<br>
+						<form id=form"+id+i+"></form>"
+						);
+				}
+}
+
+
+
+function mostrarVar(id){
+
+	var numVar = $("#"+id).val();
+	for(var i=0;i<=numVar;i++){
+		
+		if(i == 0){
+			$("#form"+id).text("");
+			
+		}else{
+			$("#form"+id).append("<br><div style='margin-left:30;'>
+				<label>Nombre de la variable "+i+":</label>
+				<br>
+				<input id=nombre"+id+i+" type='text' name= var"+id+i+"Name>
+				<br> 
+				<label>Tipo de la variable "+i+":</label>
+				<br>
+				<input id=tipo"+id+i+" type='text' name= var"+id+i+"Type>
+				<br>
+				</div>");
+			}
+		
+		
+		}
+	
+}
+</script>

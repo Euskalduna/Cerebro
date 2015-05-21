@@ -1,0 +1,19 @@
+<html>
+	<body>
+		<div id=proyecto>
+			<center>
+				<h2> Selecciona un ejercicio</h2>
+				<form action="." method="POST">
+					<select> 
+						{% for e in ej%}
+						<option value="{{e.pk}}"> {{e.nombre}} </option>
+						{% endfor %}
+					</select>
+					</br>
+					</br>
+					<input type="submit" class="sb radius" value="ver"
+				</form>
+			</center>
+		</div>
+	</body>
+</html>

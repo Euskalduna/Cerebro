@@ -1,0 +1,49 @@
+<html>  
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>IndexHTML</title>
+    
+    {% load staticfiles%}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css'%}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css'%}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css'%}"/>
+    <!--<link href="{{ STATIC_URL }}css/style.css" rel="stylesheet" type="text/css" media="screen" />-->
+    <!--{% include "head.html" %} Coge el CSS-->
+</head>	
+<body>
+   
+   <div class="container">
+    {% if login_error %}
+         <div class="flash2">Usuario y/o contraseña incorrecta</div>
+    {% endif %}
+    
+	<div id="login" class="form bradius">
+
+    	<div class="message" style="display:none;"></div>
+        <div class="logo">
+            <img src="{% static 'img/deustoTechlife.png' %}" alt="DeustoTech - Administración" title="DeustoTech - Administración" width="280" height="80">
+        </div>
+
+        <div class="acomodar">
+        	<form method="post" action="/">
+        		{% csrf_token %}<!--Genera en el compilador un token que se irá pasando a lo largo de la pagina para confirmar que se está logueado??-->
+
+	            <label for="username">Usuario: <!--Es el texto de encima del campo user--></label>
+                <input id="username" type="text" class="txt bradius" name="username" value="">
+                
+	            <label for="pass">Contraseña: <!--Es el texto de encima del campo pass--></label>
+                <input id="pass" type="password" class="txt bradius" name="pass" value="">
+                
+                <input type="hidden" name="next" value="{{ next }}" />
+	            <input type="submit" class="sb bradius" value="Entrar"><!--Boton para Hacer el logeo-->
+
+                <!--Cuando se da al boton de SUBMIT, se ejecuta el Form en el que esta, que tiene metodo POST y acción "/", esta acción indica que ira a la URL raiz, en este caso a "r^$" (directorio raiz) (en el urls.py) y ahi se llamara a lo que sea, en este caso "r^$" tiene indicado que vaya al archivo views.home y busque el metodo llamado "home" y ahí se hace lo que se tenga que hacer-->
+            </form>
+        <!--acomodar--><!--Indica el fin de Acomodar?-->
+        </div>
+       <!--login-->
+
+    </div>
+    
+</body>
+</html>
