@@ -9,6 +9,7 @@ psycopg2==2.5.2
 
 
 django-mongodb-engine==0.5.2
+
 chardet==2.0.1
 command-not-found==0.2.44
 configglue==1.0
